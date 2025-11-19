@@ -1,1 +1,1 @@
-const { registerSchema, loginSchema } = require('../validators/auth.validator');
+const { generateToken } = require('../utils/jwt');
