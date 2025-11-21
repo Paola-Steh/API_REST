@@ -1,2 +1,3 @@
-const authRoutes = require('./routes/auth.routes');
-app.use('/api/v1/auth', authRoutes);
+const taskRoutes = require('./routes/task.routes');
+
+app.use('/api/v1/tarefas', taskRoutes);
