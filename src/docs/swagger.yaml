@@ -1,0 +1,188 @@
+openapi: 3.0.0
+info:
+  title: API Clinica
+  version: 1.0.0
+  description: API para agendamento de consultas
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /auth/register:
+    post:
+      summary: Registrar novo usuário
+      tags:
+        - Autenticação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        201:
+          description: Usuário criado
+        400:
+          description: Dados inválidos
+        409:
+          description: Usuário já existe
+        500:
+          description: Erro interno
+
+  /auth/login:
+    post:
+      summary: Login do usuário
+      tags:
+        - Autenticação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        200:
+          description: Login realizado
+        400:
+          description: Dados inválidos
+        401:
+          description: Credenciais incorretas
+        500:
+          description: Erro interno
+
+  /appointments:
+    get:
+      summary: Listar agendamentos
+      security:
+        - bearerAuth: []
+      tags:
+        - Agendamentos
+      responses:
+        200:
+          description: Lista retornada
+    post:
+      summary: Criar agendamento
+      security:
+        - bearerAuth: []
+      tags:
+        - Agendamentos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppointmentInput"
+      responses:
+        201:
+          description: Criado
+        400:
+          description: Dados inválidos
+        500:
+          description: Erro interno
+
+  /appointments/{id}:
+    get:
+      summary: Buscar por ID
+      security:
+        - bearerAuth: []
+      tags:
+        - Agendamentos
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Encontrado
+        404:
+          description: Não encontrado
+
+    put:
+      summary: Atualizar agendamento
+      security:
+        - bearerAuth: []
+      tags:
+        - Agendamentos
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppointmentInput"
+      responses:
+        200:
+          description: Atualizado
+        400:
+          description: Dados inválidos
+        404:
+          description: Não encontrado
+
+    delete:
+      summary: Remover agendamento
+      security:
+        - bearerAuth: []
+      tags:
+        - Agendamentos
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Deletado
+        404:
+          description: Não encontrado
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    RegisterInput:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - name
+        - email
+        - password
+
+    LoginInput:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+
+    AppointmentInput:
+      type: object
+      properties:
+        date:
+          type: string
+        description:
+          type: string
+      required:
+        - date
+        - description
