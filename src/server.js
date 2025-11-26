@@ -1,6 +1,6 @@
 require('dotenv').config();
-const app = require('./src/app');
-const { connect } = require('./src/config/db');
+const app = require('./app');
+const { connect } = require('./config/db');
 
 const PORT = process.env.PORT || 3000;
 
@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
   try {
     await connect(process.env.MONGO_URI);
     app.listen(PORT, () => {
-      console.log(`Servidor rodando em http://localhost:${PORT}`);
+      console.log(`Servidor rodando em: http://localhost:${PORT}/api-docs`);
     });
   } catch (err) {
     console.error('❌ Falha ao iniciar servidor:', err);
